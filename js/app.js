@@ -20,7 +20,6 @@ Enemy.prototype.update = function (dt) {
     if (this.x > 505) {
         this.x = -100;
     }
-    return this.x;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -32,6 +31,7 @@ Enemy.prototype.render = function () {
 // This class requires an update(), render() and
 // a handleInput() method.
 class Player {
+
     constructor(x, y) {
         this.sprite = 'images/char-boy.png';
         this.x = x;
@@ -43,11 +43,29 @@ class Player {
     }
 
     update() {
-
+        if (moveX != undefined) {
+            this.x = moveX;
+        }
+        if (moveY != undefined) {
+            this.y = moveY;
+        }
     }
 
-    handleInput() {
-
+    handleInput(val) {
+        switch (val) {
+            case 'left':
+                this.x > 0 ? moveX = this.x - 101 : moveX = this.x;
+                break;
+            case 'up':
+                this.y > 0 ? moveY = this.y - 83 : moveY = this.y;
+                break;
+            case 'right':
+                this.x < 404 ? moveX = this.x + 101 : moveX = this.x;
+                break;
+            case 'down':
+                this.y < 400 ? moveY = this.y + 83 : moveY = this.y;
+                break;
+        }
     }
 }
 
@@ -65,6 +83,8 @@ const enemy5 = new Enemy();
 const enemy6 = new Enemy();
 const allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6];
 
+let moveX;
+let moveY;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
