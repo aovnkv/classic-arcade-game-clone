@@ -79,7 +79,10 @@ var Engine = (function(global) {
      */
   function update(dt) {
     updateEntities(dt);
-    // checkCollisions();
+    // check for collisions
+    if (isCollision()) {
+      reset();
+    }
   }
 
   /* This is called by the update function and loops through all of the
@@ -157,12 +160,28 @@ var Engine = (function(global) {
     player.render();
   }
 
+  //collisions check, and if it appears returns 'true'
+  function isCollision() {
+    for (let enemy of allEnemies) {
+      if (
+        player.y < enemy.y + 50 &&
+        player.y + 50 > enemy.y &&
+        player.x < enemy.x + 50 &&
+        player.x + 50 > enemy.x
+      ) {
+        return true;
+      }
+    }
+  }
   /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
   function reset() {
-    // noop
+    player.reset();
+    allEnemies.forEach(function(enemy) {
+      enemy.reset();
+    });
   }
 
   /* Go ahead and load all of the images we know we're going to need to

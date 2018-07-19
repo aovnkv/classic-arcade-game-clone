@@ -41,6 +41,10 @@ Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Enemy.prototype.reset = function() {
+  this.x = getRandomArbitrary(-101, 606);
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -64,17 +68,24 @@ class Player {
       this.y = movey;
     }
     //collision check and player sprite position reset
-    for (let enemy of allEnemies) {
-      if (
-        this.y < enemy.y + 50 &&
-        this.y + 50 > enemy.y &&
-        this.x < enemy.x + 50 &&
-        this.x + 50 > enemy.x
-      ) {
-        movex = 202;
-        movey = 400;
-      }
-    }
+    // for (let enemy of allEnemies) {
+    //   if (
+    //     this.y < enemy.y + 50 &&
+    //     this.y + 50 > enemy.y &&
+    //     this.x < enemy.x + 50 &&
+    //     this.x + 50 > enemy.x
+    //   ) {
+    //     this.reset();
+    //     allEnemies.forEach(function(enemy) {
+    //       enemy.reset();
+    //     });
+    //   }
+    // }
+  }
+
+  reset() {
+    movex = 202;
+    movey = 400;
   }
 
   handleInput(val) {
@@ -103,13 +114,15 @@ const player = new Player(202, 400);
 const enemy1 = new Enemy(0, 60, true);
 const enemy2 = new Enemy(101, 145);
 const enemy3 = new Enemy(202, 234);
-const enemy4 = new Enemy();
-const enemy5 = new Enemy();
-const enemy6 = new Enemy();
-const allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6];
+const allEnemies = [enemy1, enemy2, enemy3];
 
 let movex;
 let movey;
+
+// Возвращает случайное число между min (включительно) и max (не включая max)
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
