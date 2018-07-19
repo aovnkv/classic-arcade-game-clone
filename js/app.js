@@ -22,10 +22,10 @@ Enemy.prototype.update = function(dt) {
     this.x = -100;
   }
   //collision check and player sprite position reset
-  if (this.x === player.x && this.y === player.y) {
-    player.x = 202;
-    player.y = 400;
-  }
+  //   if (this.x === player.x && this.y === player.y) {
+  //     player.x = 202;
+  //     player.y = 400;
+  //   }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -48,27 +48,38 @@ class Player {
   }
 
   update() {
-    if (moveX != undefined) {
-      this.x = moveX;
+    if (movex != undefined) {
+      this.x = movex;
     }
-    if (moveY != undefined) {
-      this.y = moveY;
+    if (movey != undefined) {
+      this.y = movey;
+    }
+    for (let enemy of allEnemies) {
+      if (
+        this.y < enemy.y + 50 &&
+        this.y + 50 > enemy.y &&
+        this.x < enemy.x + 50 &&
+        this.x + 50 > enemy.x
+      ) {
+        movex = 202;
+        movey = 400;
+      }
     }
   }
 
   handleInput(val) {
     switch (val) {
       case 'left':
-        this.x > 0 ? (moveX = this.x - 101) : (moveX = this.x);
+        this.x > 0 ? (movex = this.x - 101) : (movex = this.x);
         break;
       case 'up':
-        this.y > 0 ? (moveY = this.y - 83) : (moveY = this.y);
+        this.y > 0 ? (movey = this.y - 83) : (movey = this.y);
         break;
       case 'right':
-        this.x < 404 ? (moveX = this.x + 101) : (moveX = this.x);
+        this.x < 404 ? (movex = this.x + 101) : (movex = this.x);
         break;
       case 'down':
-        this.y < 400 ? (moveY = this.y + 83) : (moveY = this.y);
+        this.y < 400 ? (movey = this.y + 83) : (movey = this.y);
         break;
     }
   }
@@ -87,8 +98,8 @@ const enemy5 = new Enemy();
 const enemy6 = new Enemy();
 const allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6];
 
-let moveX;
-let moveY;
+let movex;
+let movey;
 
 // allEnemies.forEach(function(enemy, i) {
 //   console.log('Enemy: ' + enemy + ' x: ' + enemy.x + ' y: ' + enemy.y);
