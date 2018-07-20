@@ -1,5 +1,5 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, toleft) {
+var Enemy = function(x, y, toleft, speed = 1) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
   // The image/sprite for our enemies, this uses
@@ -7,6 +7,7 @@ var Enemy = function(x, y, toleft) {
   this.sprite = 'images/enemy-bug.png';
   this.toleft = toleft; //argument that points that enemy will move in an opposite direction
   //ensure to load flipped image for this case
+  this.speed = speed;
   if (toleft) {
     this.sprite = 'images/enemy-bug-flipped.png';
   }
@@ -22,7 +23,9 @@ Enemy.prototype.update = function(dt) {
   // all computers.
 
   //build the appropriate animation direction
-  !this.toleft ? (this.x += 150 * dt) : (this.x -= 150 * dt);
+  !this.toleft
+    ? (this.x += 150 * dt * this.speed)
+    : (this.x -= 150 * dt * this.speed);
 
   //ensure that enemy sprite constantly crosses the canvas
   if (!this.toleft) {
@@ -39,10 +42,6 @@ Enemy.prototype.update = function(dt) {
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Enemy.prototype.reset = function() {
-  this.x = getRandomArbitrary(-101, 606);
 };
 
 // Now write your own player class
@@ -67,20 +66,6 @@ class Player {
     if (movey != undefined) {
       this.y = movey;
     }
-    //collision check and player sprite position reset
-    // for (let enemy of allEnemies) {
-    //   if (
-    //     this.y < enemy.y + 50 &&
-    //     this.y + 50 > enemy.y &&
-    //     this.x < enemy.x + 50 &&
-    //     this.x + 50 > enemy.x
-    //   ) {
-    //     this.reset();
-    //     allEnemies.forEach(function(enemy) {
-    //       enemy.reset();
-    //     });
-    //   }
-    // }
   }
 
   reset() {
@@ -111,19 +96,34 @@ class Player {
 // Place the player object in a variable called player
 
 const player = new Player(202, 400);
-const enemy1 = new Enemy(0, 60, true);
+const enemy1 = new Enemy(0, 60, false, 1.5);
 const enemy2 = new Enemy(101, 145);
 const enemy3 = new Enemy(202, 234);
 const allEnemies = [enemy1, enemy2, enemy3];
-
+const ypos = [60, 145, 234];
 let movex;
 let movey;
 
-// Возвращает случайное число между min (включительно) и max (не включая max)
+// return random number between min and max
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
+/**
+ * Randomize array element order in-place.
+ * Using Durstenfeld shuffle algorithm.
+ */
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
 
+function rand() {
+  return Math.random() >= 0.5;
+}
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {

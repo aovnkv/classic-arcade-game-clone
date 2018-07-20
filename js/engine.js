@@ -179,8 +179,17 @@ var Engine = (function(global) {
      */
   function reset() {
     player.reset();
+    shuffleArray(ypos);
+    let i = allEnemies.length - 1;
     allEnemies.forEach(function(enemy) {
-      enemy.reset();
+      enemy.x = getRandomArbitrary(-101, 606);
+      enemy.y = ypos[i--];
+      enemy.toleft = rand();
+      if (enemy.toleft) {
+        enemy.sprite = 'images/enemy-bug-flipped.png';
+      } else {
+        enemy.sprite = 'images/enemy-bug.png';
+      }
     });
   }
 
