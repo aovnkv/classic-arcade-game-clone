@@ -2,9 +2,11 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
 </head>
 
 <body>
@@ -14,12 +16,29 @@
                 <span>Lives:</span>
                 <ul class="hearts"></ul>
             </div>
+            <div>Restart:
+                <span class="restart fa fa-redo">
+                </span>
+            </div>
             <div class="score">
                 <span>Score:</span>
                 <span class="points">0</span>
             </div>
         </div>
     </div>
+
+    <div id="win-window" class="modal">
+        <h1>Congratulations!</h1>
+        <h3>Your score is
+            <span class="game-points"></span> points.
+        </h3>
+        <p>Close the window and click "
+            <i class="fa fa-redo"></i> " button to play again.</p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
