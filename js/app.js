@@ -115,7 +115,7 @@ let livesAmount = () => {
   for (let l = 1; l < lives + 1; l++) {
     let life = document.createElement('LI');
     hearts.appendChild(life);
-    life.innerHTML = '<img width="20" height="30" src="images/heart.png">';
+    life.innerHTML = '<img width="20" height="30" src="images/Heart.png">';
   }
 };
 
@@ -148,7 +148,7 @@ function lostLife(lives) {
     let life = document.createElement('LI');
     hearts.appendChild(life);
     life.innerHTML =
-      '<img width="20" height="30" src="images/heart-blank.png">';
+      '<img width="20" height="30" src="images/Heart-blank.png">';
   }
 }
 //collisions check, and if it appears returns 'true'
