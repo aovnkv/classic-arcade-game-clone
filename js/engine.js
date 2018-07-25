@@ -79,9 +79,11 @@ var Engine = (function(global) {
      */
   function update(dt) {
     updateEntities(dt);
-    // check for collisions
+    // check for collisions and decrease lives amount
     if (isCollision()) {
-      reset();
+      player.reset();
+      lives -= 1;
+      lostLife(lives);
     }
   }
 
@@ -156,41 +158,17 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.render();
     });
-
     player.render();
   }
 
-  //collisions check, and if it appears returns 'true'
-  function isCollision() {
-    for (let enemy of allEnemies) {
-      if (
-        player.y < enemy.y + 50 &&
-        player.y + 50 > enemy.y &&
-        player.x < enemy.x + 50 &&
-        player.x + 50 > enemy.x
-      ) {
-        return true;
-      }
-    }
-  }
   /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
   function reset() {
     player.reset();
-    shuffleArray(ypos);
-    let i = allEnemies.length - 1;
-    allEnemies.forEach(function(enemy) {
-      enemy.x = getRandomArbitrary(-101, 606);
-      enemy.y = ypos[i--];
-      enemy.toleft = rand();
-      if (enemy.toleft) {
-        enemy.sprite = 'images/enemy-bug-flipped.png';
-      } else {
-        enemy.sprite = 'images/enemy-bug.png';
-      }
-    });
+    points.innerHTML = 0;
+    livesAmount();
   }
 
   /* Go ahead and load all of the images we know we're going to need to

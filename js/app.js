@@ -4,15 +4,14 @@ var Enemy = function(x, y, toleft, speed = 1) {
   // we've provided one for you to get started
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
-  this.sprite = 'images/enemy-bug.png';
   this.toleft = toleft; //argument that points that enemy will move in an opposite direction
+  this.speed = speed; //ratio to multiply the movement per frame
+  this.x = x; //canvas x coordinate
+  this.y = y; //canvas y coordinate
   //ensure to load flipped image for this case
-  this.speed = speed;
-  if (toleft) {
-    this.sprite = 'images/enemy-bug-flipped.png';
-  }
-  this.x = x;
-  this.y = y;
+  this.toleft
+    ? (this.sprite = 'images/enemy-bug-flipped.png')
+    : (this.sprite = 'images/enemy-bug.png');
 };
 
 // Update the enemy's position, required method for game
@@ -59,20 +58,23 @@ class Player {
   }
 
   update() {
-    //player's first move handling
+    //player's first move handling and reaching the water
     if (movex != undefined) {
       this.x = movex;
     }
     if (movey != undefined) {
       this.y = movey;
     }
+    if (this.y < 68) {
+      levelUp();
+    }
   }
-
+  //return player position to a start
   reset() {
     movex = 202;
     movey = 400;
   }
-
+  //input handling and ensure player won't cross the game boundaries
   handleInput(val) {
     switch (val) {
       case 'left':
@@ -95,15 +97,73 @@ class Player {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-const player = new Player(202, 400);
-const enemy1 = new Enemy(0, 60, false, 1.5);
-const enemy2 = new Enemy(101, 145);
-const enemy3 = new Enemy(202, 234);
-const allEnemies = [enemy1, enemy2, enemy3];
-const ypos = [60, 145, 234];
-let movex;
-let movey;
+const player = new Player(202, 400); //our new player object
+//enemies objects in random positions on x and movement direction
+const enemy1 = new Enemy(getRandomArbitrary(-101, 606), 60, rand());
+const enemy2 = new Enemy(getRandomArbitrary(-101, 606), 145, rand());
+const enemy3 = new Enemy(getRandomArbitrary(-101, 606), 234, rand());
+const allEnemies = [enemy1, enemy2, enemy3]; //array for all enemies
+const ypos = [60, 145, 234]; //array for reposition enemies after each round
+const points = document.querySelector('.points');
+const hearts = document.querySelector('.hearts');
+let lives = 3; //amount of lives at new game or after reset()
+let movex; //variable to handle player moves on x
+let movey; //variable to handle player moves on y
 
+//function expression to add lives to DOM
+let livesAmount = () => {
+  for (let l = 1; l < lives + 1; l++) {
+    let life = document.createElement('LI');
+    hearts.appendChild(life);
+    life.innerHTML = '<img width="20" height="30" src="images/heart.png">';
+  }
+};
+
+//this func calls when player reaches water
+function levelUp() {
+  player.reset(); //reset the player position
+  points.innerHTML = Number(points.innerHTML) + 100; //add score points
+  //shuffle and allocate all enemies in random positions and directions + increase speed rate
+  shuffleArray(ypos);
+  let i = allEnemies.length - 1;
+  allEnemies.forEach(function(enemy) {
+    enemy.x = getRandomArbitrary(-101, 606);
+    enemy.y = ypos[i--];
+    enemy.toleft = rand();
+    enemy.speed *= 1.1;
+    if (enemy.toleft) {
+      enemy.sprite = 'images/enemy-bug-flipped.png';
+    } else {
+      enemy.sprite = 'images/enemy-bug.png';
+    }
+  });
+}
+
+//handle lives output to DOM
+function lostLife(lives) {
+  for (let i = lives; i < 3; i++) {
+    hearts.removeChild(hearts.lastChild);
+  }
+  for (let j = lives; j < 3; j++) {
+    let life = document.createElement('LI');
+    hearts.appendChild(life);
+    life.innerHTML =
+      '<img width="20" height="30" src="images/heart-blank.png">';
+  }
+}
+//collisions check, and if it appears returns 'true'
+function isCollision() {
+  for (let enemy of allEnemies) {
+    if (
+      player.y < enemy.y + 50 &&
+      player.y + 50 > enemy.y &&
+      player.x < enemy.x + 50 &&
+      player.x + 50 > enemy.x
+    ) {
+      return true;
+    }
+  }
+}
 // return random number between min and max
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
@@ -120,7 +180,7 @@ function shuffleArray(array) {
     array[j] = temp;
   }
 }
-
+// return random true or false
 function rand() {
   return Math.random() >= 0.5;
 }
