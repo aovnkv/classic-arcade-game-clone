@@ -25,14 +25,13 @@ var Engine = (function (global) {
         lastTime;
 
     canvas.width = 505;
-    canvas.height = 606;
+    canvas.height = 540;
     doc.body.appendChild(canvas);
 
+    //fires reset() when player clicks restart button
     restart.addEventListener('click', function () {
-        //e.preventDefault();
         reset();
     });
-
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -88,8 +87,10 @@ var Engine = (function (global) {
         if (isCollision()) {
             player.reset();
             lives -= 1;
+            //condition when the game is over
             if (lives < 0) {
-                winnerPopUp();
+                winnerPopUp(); //fires a modal window
+                //until modal window's opened: clear the game from enemies and block players movement
                 allEnemies = [];
                 document.removeEventListener('keyup', keyupHandler);
                 return;
@@ -123,7 +124,7 @@ var Engine = (function (global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png', // Top row is water
+                'images/water-block-var.png', // Top row is water
                 'images/stone-block.png', // Row 1 of 3 of stone
                 'images/stone-block.png', // Row 2 of 3 of stone
                 'images/stone-block.png', // Row 3 of 3 of stone
@@ -151,7 +152,13 @@ var Engine = (function (global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                if (row === 0) {
+                    ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                } else if (row === 1) {
+                    ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 32);
+                } else {
+                    ctx.drawImage(Resources.get(rowImages[row]), col * 101, (row * 83) - 51);
+                }
             }
         }
 
@@ -176,20 +183,27 @@ var Engine = (function (global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
+
+    // assign all variables its defaults
     function reset() {
         player.reset();
         allEnemies = [];
         lives = 3;
+        lastTime = Date.now();
         points.innerHTML = 0;
+        //clear hearts
         while (hearts.firstChild) {
             hearts.removeChild(hearts.firstChild);
         }
+        //add new hearts
         livesAmount();
         //enemies objects in random positions on x and movement direction
-        let enemy1 = new Enemy(getRandomArbitrary(-101, 606), 60, rand());
-        let enemy2 = new Enemy(getRandomArbitrary(-101, 606), 145, rand());
-        let enemy3 = new Enemy(getRandomArbitrary(-101, 606), 234, rand());
+        let enemy1 = new Enemy(getRandomArbitrary(-101, 606), 10, rand());
+        let enemy2 = new Enemy(getRandomArbitrary(-101, 606), 93, rand());
+        let enemy3 = new Enemy(getRandomArbitrary(-101, 606), 176, rand());
+        //add the enemies to an array
         allEnemies.push(enemy1, enemy2, enemy3);
+        //unblock player movement
         document.addEventListener('keyup', keyupHandler);
     }
 
@@ -199,7 +213,7 @@ var Engine = (function (global) {
      */
     Resources.load([
         'images/stone-block.png',
-        'images/water-block.png',
+        'images/water-block-var.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/enemy-bug-flipped.png',

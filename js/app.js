@@ -65,14 +65,14 @@ class Player {
         if (movey != undefined) {
             this.y = movey;
         }
-        if (this.y < 68) {
+        if (this.y < 10) {
             levelUp();
         }
     }
     //return player position to a start
     reset() {
         movex = 202;
-        movey = 400;
+        movey = 350;
     }
     //input handling and ensure player won't cross the game boundaries
     handleInput(val) {
@@ -87,7 +87,7 @@ class Player {
                 this.x < 404 ? (movex = this.x + 101) : (movex = this.x);
                 break;
             case 'down':
-                this.y < 400 ? (movey = this.y + 83) : (movey = this.y);
+                this.y < 350 ? (movey = this.y + 83) : (movey = this.y);
                 break;
         }
     }
@@ -97,13 +97,13 @@ class Player {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-const player = new Player(202, 400); //our new player object
-const ypos = [60, 145, 234]; //array for reposition enemies after each round
+const player = new Player(0, 0); //our new player object
+const ypos = [10, 93, 176]; //array for reposition enemies after each round
 const points = document.querySelector('.points');
 const hearts = document.querySelector('.hearts');
 const restart = document.querySelector('.restart');
 const modalwindow = $('#win-window');
-let allEnemies = [];
+let allEnemies = []; //array to hold all enemy objects
 let lives = 3; //amount of lives at new game or after reset()
 let movex; //variable to handle player moves on x
 let movey; //variable to handle player moves on y
@@ -203,4 +203,10 @@ function keyupHandler(e) {
         40: 'down'
     };
     player.handleInput(allowedKeys[e.keyCode]);
+}
+
+window.onload = function () {
+    const lp = document.querySelector('.lowerpanel');
+    const cv = document.querySelector('canvas');
+    cv.parentNode.insertBefore(lp, cv.nextSibling);
 }

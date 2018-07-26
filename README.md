@@ -1,6 +1,17 @@
-frontend-nanodegree-arcade-game
-===============================
+# Classic Arcade Game Project
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This is my project of a classic arcade game Frogger clone for Google Frontend Udacity Nanodegree Scholarship 2017/2018.
+To play: [click here](https://clitorrent.github.io/classic-arcade-game-clone/)
+Enjoy!
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+## Table of Contents
+
+- [Instructions](#instructions)
+
+## Instructions
+
+The game's goal is to reach the water on top as many times as possible.
+You should use the keyboard arrow keys to move the hero and avoid collisions with the bugs.
+After every round (when the water is reached) the speed of the enemies will raise.
+Player can restart the game any time by clicking &#10227;
+Good luck!
