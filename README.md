@@ -1,7 +1,7 @@
 # Classic Arcade Game Project
 
 This is my project of a classic arcade game Frogger clone for Google Frontend Udacity Nanodegree Scholarship 2017/2018.
-To play: [click here](https://clitorrent.github.io/classic-arcade-game-clone/)
+To play: [click here](https://aovnkv.github.io/classic-arcade-game-clone/)<br>
 Enjoy!
 
 ## Table of Contents
